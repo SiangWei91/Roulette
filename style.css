@@ -1,0 +1,278 @@
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif; /* Modern font stack */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 500px; /* Initial max-width */
+}
+
+h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  background: linear-gradient(45deg, #008080, #40E0D0, #FFD700);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.roulette-wrapper {
+  position: relative;
+  /* Initial canvas wrapper was sized by canvas content or slightly larger, not fixed small size */
+  /* Let's use dimensions that would fit a 400x400 canvas well */
+  width: 400px; 
+  height: 400px;
+  margin: 20px auto;
+  /* No complex box-shadow from later versions */
+}
+
+#rouletteCanvas {
+  width: 100%; 
+  height: 100%;
+  border-radius: 50%;
+  /* Add a subtle border and 3D effect */
+  border: 1px solid #B0BEC5; /* Light grey border, less prominent than thick wood */
+  box-shadow: 
+      inset 0 0 10px rgba(0,0,0,0.1), /* Soft inner shadow for depth */
+      0 0 8px rgba(0,0,0,0.2);      /* Subtle outer shadow for lift, complementing wrapper shadow */
+}
+
+/* Simple triangle pointer (Original red one) */
+#pointer {
+  position: absolute;
+  /* Position on the right edge, vertically centered */
+  right: -10px; /* Adjust to make the pointer base sit near or slightly outside the wrapper edge */
+                /* Or, if pointer tip should be at edge: right: 0; and adjust transform origin if needed */
+  top: 50%;
+  
+  /* Dimensions for the triangle (same as before, but will be rotated) */
+  width: 0;
+  height: 0;
+  border-top: 15px solid transparent;     /* Half-base */
+  border-bottom: 15px solid transparent;  /* Half-base */
+  border-right: 25px solid #D32F2F;    /* Color, this will be the tip pointing left */
+
+  /* Transform to center vertically and rotate */
+  /* translateY(-50%) first, then rotate. Or adjust transform-origin. */
+  /* Let's ensure the rotation happens around the triangle's effective center or base. */
+  /* If border-right is the colored one, it points left. No rotation needed if this is the natural orientation. */
+  /* The standard CSS triangle with border-right colored points left. */
+  transform: translateY(-50%); /* Vertically center the pointer's origin */
+  
+  filter: drop-shadow(2px 0px 3px rgba(0,0,0,0.5)); /* Shadow adjusted for side position */
+  z-index: 10; 
+}
+
+
+.controls {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controls label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* .controls textarea rule removed */
+
+/* .controls button rule removed */
+
+.result {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #ecf0f1;
+  border-radius: 5px;
+}
+
+.result h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+#winnerDisplay {
+  font-weight: bold;
+  color: #c0392b; /* Roulette red */
+}
+
+/* Responsive adjustments from initial version */
+@media (max-width: 600px) {
+  .container {
+      width: 95%;
+      padding: 15px;
+  }
+
+  .roulette-wrapper {
+      /* Adjust wrapper size for smaller screens if canvas content is smaller */
+      /* If canvas is 400x400, this might be too small unless canvas itself scales down */
+      /* The #rouletteCanvas is width:100%, height:100% of wrapper.
+         So, if wrapper is 250x250, canvas becomes 250x250.
+         This is consistent with initial responsive behavior.
+      */
+      width: 250px; 
+      height: 250px;
+  }
+  
+  #pointer { /* Pointer also scaled down */
+      right: -8px; /* Adjust if needed */
+      border-top-width: 12px;
+      border-bottom-width: 12px;
+      border-right-width: 20px; /* Smaller triangle */
+      /* transform: translateY(-50%); (inherited) */
+  }
+
+  /* .controls textarea rule removed, so no responsive part for it either */
+
+  /* .controls button rule removed, so no responsive part for it either */
+  /* If .control-button needs responsive text/padding, it would be done here */
+
+  .result h2 {
+      font-size: 1.1em;
+  }
+}
+
+/* Styling for the dynamic item input area */
+#itemListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space between item rows */
+  margin-bottom: 15px; /* Space before the "Add Prize" button */
+  width: 90%; /* Or a fixed width, e.g., 300px */
+  max-width: 400px; /* Ensure it doesn't get too wide */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.item-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between input field and remove button */
+  padding: 5px;
+  border: 1px solid #D1D9E0; /* Light border for each row */
+  border-radius: 4px;
+  background-color: #FAFCFF; /* Very light background for rows */
+}
+
+.item-input-field {
+  flex-grow: 1; /* Input field takes available space */
+  padding: 8px 10px;
+  border: 1px solid #CFD8DC; /* Light grey border for input */
+  border-radius: 3px;
+  font-size: 0.9em;
+  /* Font family inherited from body */
+}
+
+.item-input-field:focus {
+  border-color: #4A90E2; /* Highlight focus */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+}
+
+.remove-item-button {
+  padding: 6px 10px;
+  font-size: 0.85em;
+  background-color: #FFCDD2; /* Light red */
+  color: #C62828; /* Darker red text */
+  border: 1px solid #EF9A9A;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.remove-item-button:hover {
+  background-color: #EF9A9A; /* Darker red on hover */
+  border-color: #E57373;
+  color: #B71C1C;
+}
+
+/* Modern, elegant button styling */
+.control-button {
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.1em;
+  font-weight: 500;
+  border-radius: 50px; /* Pill shape */
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 10px 15px 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Remove margin from last button */
+.control-button:last-of-type {
+  margin-right: 0;
+}
+
+/* Hover effects */
+.control-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Active/click effect */
+.control-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Add Prize Button - Purple gradient */
+#addItemButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+#addItemButton:hover {
+  background: linear-gradient(135deg, #5a6fd1 0%, #6a4290 100%);
+}
+
+/* Spin Button - Coral gradient */
+#spinButton {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+}
+
+#spinButton:hover {
+  background: linear-gradient(135deg, #e57055 0%, #eda26d 100%);
+}
+
+/* Optional: Ripple effect on click */
+.control-button::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff 10%, transparent 10.01%) no-repeat 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 1s;
+}
+
+.control-button:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
