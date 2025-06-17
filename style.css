@@ -8,7 +8,6 @@ body {
   margin: 0;
   background-color: #f0f0f0;
   color: #333;
-  padding-top: 20px; /* Added */
 }
 
 .container {
@@ -34,12 +33,12 @@ h1 {
   position: relative;
   /* Initial canvas wrapper was sized by canvas content or slightly larger, not fixed small size */
   /* Let's use dimensions that would fit a 400x400 canvas well */
-  width: 80vw; 
-  height: 80vw;
-  max-width: 400px;
-  max-height: 400px;
+  width: 85vw; 
+  height: 85vw;
+  max-width: 450px;
+  max-height: 450px;
   aspect-ratio: 1 / 1;
-  margin: 20px auto;
+  margin: 20px auto 40px auto; /* Increased bottom margin */
   /* No complex box-shadow from later versions */
 }
 
@@ -129,8 +128,8 @@ h1 {
          This is consistent with initial responsive behavior.
       */
       /* Fixed width and height removed, relying on vw and max-width/max-height */
-      max-width: 300px; 
-      max-height: 300px;
+      max-width: 330px; 
+      max-height: 330px;
   }
   
   #pointer { /* Pointer also scaled down */
