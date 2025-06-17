@@ -2,12 +2,13 @@ body {
   font-family: "Helvetica Neue", Arial, sans-serif; /* Modern font stack */
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; Removed */
+  /* justify-content: center; Removed */
   min-height: 100vh;
   margin: 0;
   background-color: #f0f0f0;
   color: #333;
+  padding-top: 20px; /* Added */
 }
 
 .container {
