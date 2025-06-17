@@ -35,6 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // const itemInputPlaceholder = "Item 1\nItem 2\nItem 3"; // Removed
 
+    function resizeCanvas() {
+        const canvas = document.getElementById('rouletteCanvas'); // Ensure canvas is fetched if not in scope
+        if (canvas) { // Check if canvas exists
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            drawWheel(currentAngle); // Redraw with new dimensions
+        }
+    }
+
     function getItems() {
        const items = [];
        const inputFields = itemListContainer.querySelectorAll('.item-input-field');
@@ -319,7 +328,12 @@ document.addEventListener('DOMContentLoaded', () => {
     addItemEntry();
 
     currentAngle = 0; // Ensure initial angle is 0
-    drawWheel(currentAngle); // Initial draw
+    // Call resizeCanvas initially to set the correct size.
+    // resizeCanvas() includes a call to drawWheel(), so the explicit one below is redundant.
+    resizeCanvas(); 
+
+    // Add resize event listener
+    window.addEventListener('resize', resizeCanvas);
 
   // Service Worker Registration
   if ('serviceWorker' in navigator) {
