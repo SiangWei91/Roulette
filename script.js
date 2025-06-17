@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // Updated font style for wheel items
-        ctx.font = '400 15px "Helvetica Neue", Arial, sans-serif'; 
+        ctx.font = '400 17px "Helvetica Neue", Arial, sans-serif'; 
 
         // 1. Draw Segments
         for (let i = 0; i < numItems; i++) {
