@@ -33,8 +33,11 @@ h1 {
   position: relative;
   /* Initial canvas wrapper was sized by canvas content or slightly larger, not fixed small size */
   /* Let's use dimensions that would fit a 400x400 canvas well */
-  width: 400px; 
-  height: 400px;
+  width: 80vw; 
+  height: 80vw;
+  max-width: 400px;
+  max-height: 400px;
+  aspect-ratio: 1 / 1;
   margin: 20px auto;
   /* No complex box-shadow from later versions */
 }
@@ -124,8 +127,9 @@ h1 {
          So, if wrapper is 250x250, canvas becomes 250x250.
          This is consistent with initial responsive behavior.
       */
-      width: 250px; 
-      height: 250px;
+      /* Fixed width and height removed, relying on vw and max-width/max-height */
+      max-width: 300px; 
+      max-height: 300px;
   }
   
   #pointer { /* Pointer also scaled down */
